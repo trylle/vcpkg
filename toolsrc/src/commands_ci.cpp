@@ -77,7 +77,7 @@ namespace vcpkg::Commands::CI
                     System::println(System::color::success, "Package %s is installed", action.spec);
                 }
                 else
-                    Checks::unreachable();
+                    Checks::unreachable(__LINE_INFO__);
             }
             catch (const std::exception& e)
             {

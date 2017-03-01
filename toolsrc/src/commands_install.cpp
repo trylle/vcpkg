@@ -171,7 +171,7 @@ namespace vcpkg::Commands::Install
         {
             if (status_db->find_installed(dep, spgh.package.spec.target_triplet()) == status_db->end())
             {
-                Checks::unreachable();
+                Checks::unreachable(__LINE_INFO__);
             }
         }
         write_update(paths, spgh);
@@ -235,7 +235,7 @@ namespace vcpkg::Commands::Install
                     System::println(System::color::success, "Package %s is installed", action.spec);
                 }
                 else
-                    Checks::unreachable();
+                    Checks::unreachable(__LINE_INFO__);
             }
             catch (const std::exception& e)
             {

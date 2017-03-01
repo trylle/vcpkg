@@ -12,9 +12,9 @@ namespace vcpkg
 
 namespace vcpkg::Checks
 {
-    void unreachable()
+    void unreachable(const LineInfo& line_info)
     {
-        System::println(System::color::error, "Error: Unreachable code was reached");
+        System::println(System::color::error, "Error: Unreachable code was reached: %s", line_info.toString());
 #ifndef NDEBUG
         std::abort();
 #else

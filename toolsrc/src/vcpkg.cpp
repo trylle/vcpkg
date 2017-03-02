@@ -57,13 +57,13 @@ static void inner(const vcpkg_cmd_arguments& args)
         }
     }
 
-    Checks::check_exit(!vcpkg_root_dir.empty(), "Error: Could not detect vcpkg-root.");
+    Checks::check_exit(__LINE_INFO__, !vcpkg_root_dir.empty(), "Error: Could not detect vcpkg-root.");
 
     const expected<vcpkg_paths> expected_paths = vcpkg_paths::create(vcpkg_root_dir);
-    Checks::check_exit(!expected_paths.error_code(), "Error: Invalid vcpkg root directory %s: %s", vcpkg_root_dir.string(), expected_paths.error_code().message());
-    const vcpkg_paths paths = expected_paths.get_or_throw();
+    Checks::check_exit(__LINE_INFO__, !expected_paths.error_code(), "Error: Invalid vcpkg root directory %s: %s", vcpkg_root_dir.string(), expected_paths.error_code().message());
+    const vcpkg_paths paths = expected_paths.get_or_throw(__LINE_INFO__);
     int exit_code = _wchdir(paths.root.c_str());
-    Checks::check_exit(exit_code == 0, "Changing the working dir failed");
+    Checks::check_exit(__LINE_INFO__, exit_code == 0, "Changing the working dir failed");
 
     if (auto command_function = Commands::find(args.command, Commands::get_available_commands_type_b()))
     {
@@ -112,7 +112,7 @@ static void loadConfig()
 
     try
     {
-        std::string config_contents = Files::read_contents(localappdata / "vcpkg" / "config").get_or_throw();
+        std::string config_contents = Files::read_contents(localappdata / "vcpkg" / "config").get_or_throw(__LINE_INFO__);
 
         std::unordered_map<std::string, std::string> keys;
         auto pghs = Paragraphs::parse_paragraphs(config_contents);
@@ -127,7 +127,7 @@ static void loadConfig()
 
         auto user_id = keys["User-Id"];
         auto user_time = keys["User-Since"];
-        Checks::check_throw(!user_id.empty() && !user_time.empty(), ""); // Use as goto to the catch statement
+        Checks::check_throw(__LINE_INFO__, !user_id.empty() && !user_time.empty(), ""); // Use as goto to the catch statement
 
         SetUserInformation(user_id, user_time);
         return;
@@ -157,7 +157,7 @@ static System::Stopwatch2 g_timer;
 
 static std::string trim_path_from_command_line(const std::string& full_command_line)
 {
-    Checks::check_exit(full_command_line.size() > 0, "Internal failure - cannot have empty command line");
+    Checks::check_exit(__LINE_INFO__, full_command_line.size() > 0, "Internal failure - cannot have empty command line");
 
     if (full_command_line[0] == '"')
     {

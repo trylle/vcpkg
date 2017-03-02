@@ -12,6 +12,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
     szArgList = CommandLineToArgvW(GetCommandLineW(), &argCount);
 
-    Checks::check_exit(argCount == 2, "Requires exactly one argument, the path to the payload file");
-    Upload(Files::read_contents(szArgList[1]).get_or_throw());
+    Checks::check_exit(__LINE_INFO__, argCount == 2, "Requires exactly one argument, the path to the payload file");
+    Upload(Files::read_contents(szArgList[1]).get_or_throw(__LINE_INFO__));
 }

@@ -105,7 +105,7 @@ namespace vcpkg::Environment
         const fs::path script = paths.scripts / "findVisualStudioInstallationInstances.ps1";
         const std::wstring cmd = Strings::wformat(L"powershell -ExecutionPolicy Bypass %s", script.native());
         System::exit_code_and_output ec_data = System::cmd_execute_and_capture_output(cmd);
-        Checks::check_exit(ec_data.exit_code == 0, "Could not run script to detect VS 2017 instances");
+        Checks::check_exit(__LINE_INFO__, ec_data.exit_code == 0, "Could not run script to detect VS 2017 instances");
         return Strings::split(ec_data.output, "\n");
     }
 
@@ -234,7 +234,7 @@ namespace vcpkg::Environment
     static fs::path find_ProgramFiles()
     {
         const optional<std::wstring> program_files = System::get_environmental_variable(L"PROGRAMFILES");
-        Checks::check_exit(program_files.get() != nullptr, "Could not detect the PROGRAMFILES environmental variable");
+        Checks::check_exit(__LINE_INFO__, program_files.get() != nullptr, "Could not detect the PROGRAMFILES environmental variable");
         return *program_files;
     }
 

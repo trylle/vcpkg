@@ -14,7 +14,7 @@ namespace vcpkg::Commands::Edit
         const std::string port_name = args.command_arguments.at(0);
 
         const fs::path portpath = paths.ports / port_name;
-        Checks::check_exit(fs::is_directory(portpath), R"(Could not find port named "%s")", port_name);
+        Checks::check_exit(__LINE_INFO__, fs::is_directory(portpath), R"(Could not find port named "%s")", port_name);
 
         // Find editor
         const optional<std::wstring> env_EDITOR_optional = System::get_environmental_variable(L"EDITOR");
@@ -33,7 +33,7 @@ namespace vcpkg::Commands::Edit
             }
             else
             {
-                Checks::exit_with_message("Visual Studio Code was not found and the environmental variable EDITOR is not set");
+                Checks::exit_with_message(__LINE_INFO__, "Visual Studio Code was not found and the environmental variable EDITOR is not set");
             }
         }
 

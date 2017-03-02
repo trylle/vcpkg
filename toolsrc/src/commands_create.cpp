@@ -22,9 +22,10 @@ namespace vcpkg::Commands::Create
         if (args.command_arguments.size() >= 3)
         {
             const std::string& zip_file_name = args.command_arguments.at(2);
-            Checks::check_exit(!Files::has_invalid_chars_for_filesystem(zip_file_name),
-                               R"(Filename cannot contain invalid chars %s, but was %s)",
-                               Files::FILESYSTEM_INVALID_CHARACTERS, zip_file_name);
+            Checks::check_exit(__LINE_INFO__,
+                                            !Files::has_invalid_chars_for_filesystem(zip_file_name),
+                                            R"(Filename cannot contain invalid chars %s, but was %s)",
+                                            Files::FILESYSTEM_INVALID_CHARACTERS, zip_file_name);
             custom_filename = Strings::wformat(LR"( -DFILENAME="%s" )", Strings::utf8_to_utf16(zip_file_name));
         }
 

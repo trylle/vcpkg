@@ -27,7 +27,7 @@ namespace vcpkg::Commands::Build
 
     BuildResult build_package(const SourceParagraph& source_paragraph, const package_spec& spec, const vcpkg_paths& paths, const fs::path& port_dir, const StatusParagraphs& status_db)
     {
-        Checks::check_exit(spec.name() == source_paragraph.name, "inconsistent arguments to build_package()");
+        Checks::check_exit(__LINE_INFO__, spec.name() == source_paragraph.name, "inconsistent arguments to build_package()");
 
         const triplet& target_triplet = spec.target_triplet();
         for (auto&& dep : source_paragraph.depends)
@@ -129,7 +129,7 @@ namespace vcpkg::Commands::Build
         }
 
         const expected<SourceParagraph> maybe_spgh = Paragraphs::try_load_port(port_dir);
-        Checks::check_exit(!maybe_spgh.error_code(), "Could not find package named %s: %s", spec, maybe_spgh.error_code().message());
+        Checks::check_exit(__LINE_INFO__, !maybe_spgh.error_code(), "Could not find package named %s: %s", spec, maybe_spgh.error_code().message());
         const SourceParagraph& spgh = *maybe_spgh.get();
 
         Environment::ensure_utilities_on_path(paths);
@@ -145,7 +145,7 @@ namespace vcpkg::Commands::Build
                                }),
                 unmet_dependencies.end());
 
-            Checks::check_exit(!unmet_dependencies.empty());
+            Checks::check_exit(__LINE_INFO__, !unmet_dependencies.empty());
             System::println(System::color::error, "The build command requires all dependencies to be already installed.");
             System::println("The following dependencies are missing:");
             System::println("");

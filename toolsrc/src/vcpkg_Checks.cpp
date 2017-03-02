@@ -14,7 +14,8 @@ namespace vcpkg::Checks
 {
     void unreachable(const LineInfo& line_info)
     {
-        System::println(System::color::error, "Error: Unreachable code was reached: %s", line_info.toString());
+        System::println(System::color::error, "Error: Unreachable code was reached.");
+        System::println(System::color::error, line_info.toString());
 #ifndef NDEBUG
         std::abort();
 #else
@@ -22,26 +23,26 @@ namespace vcpkg::Checks
 #endif
     }
 
-    void exit_with_message(const char* errorMessage)
+    void exit_with_message(const LineInfo& line_info, const char* errorMessage)
     {
         System::println(System::color::error, errorMessage);
         exit(EXIT_FAILURE);
     }
 
-    void throw_with_message(const char* errorMessage)
+    void throw_with_message(const LineInfo& line_info, const char* errorMessage)
     {
         throw std::runtime_error(errorMessage);
     }
 
-    void check_throw(bool expression, const char* errorMessage)
+    void check_throw(const LineInfo& line_info, bool expression, const char* errorMessage)
     {
         if (!expression)
         {
-            throw_with_message(errorMessage);
+            throw_with_message(line_info, errorMessage);
         }
     }
 
-    void check_exit(bool expression)
+    void check_exit(const LineInfo& line_info, bool expression)
     {
         if (!expression)
         {
@@ -49,11 +50,11 @@ namespace vcpkg::Checks
         }
     }
 
-    void check_exit(bool expression, const char* errorMessage)
+    void check_exit(const LineInfo& line_info, bool expression, const char* errorMessage)
     {
         if (!expression)
         {
-            exit_with_message(errorMessage);
+            exit_with_message(line_info, errorMessage);
         }
     }
 }

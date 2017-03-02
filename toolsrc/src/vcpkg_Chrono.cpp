@@ -78,7 +78,7 @@ namespace vcpkg
 
     const Stopwatch& Stopwatch::start()
     {
-        Checks::check_exit(!this->m_isRunning, "This stopwatch is already running.");
+        Checks::check_exit(__LINE_INFO__, !this->m_isRunning, "This stopwatch is already running.");
         this->m_isRunning = true;
         this->m_startTick = std::chrono::high_resolution_clock::now();
         return *this;
@@ -87,7 +87,7 @@ namespace vcpkg
     const Stopwatch& Stopwatch::stop()
     {
         auto tick = std::chrono::high_resolution_clock::now();
-        Checks::check_exit(this->m_isRunning, "This stopwatch is already stopped.");
+        Checks::check_exit(__LINE_INFO__, this->m_isRunning, "This stopwatch is already stopped.");
         this->m_isRunning = false;
         this->m_elapsedNanos += tick - this->m_startTick;
         return *this;

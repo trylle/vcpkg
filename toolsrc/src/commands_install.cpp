@@ -194,7 +194,7 @@ namespace vcpkg::Commands::Install
 
         StatusParagraphs status_db = database_load_check(paths);
         std::vector<package_spec_with_install_plan> install_plan = Dependencies::create_install_plan(paths, specs, status_db);
-        Checks::check_exit(!install_plan.empty(), "Install plan cannot be empty");
+        Checks::check_exit(__LINE_INFO__, !install_plan.empty(), "Install plan cannot be empty");
 
         std::string specs_string = install_plan[0].spec.toString();
         for (size_t i = 1; i < install_plan.size(); ++i)
@@ -225,7 +225,7 @@ namespace vcpkg::Commands::Install
                         System::println(Build::create_user_troubleshooting_message(action.spec));
                         exit(EXIT_FAILURE);
                     }
-                    const BinaryParagraph bpgh = Paragraphs::try_load_cached_package(paths, action.spec).get_or_throw();
+                    const BinaryParagraph bpgh = Paragraphs::try_load_cached_package(paths, action.spec).get_or_throw(__LINE_INFO__);
                     install_package(paths, bpgh, &status_db);
                     System::println(System::color::success, "Package %s is installed", action.spec);
                 }

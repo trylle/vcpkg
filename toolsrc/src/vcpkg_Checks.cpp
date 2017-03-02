@@ -12,11 +12,18 @@ namespace vcpkg
 
 namespace vcpkg::Checks
 {
+    static void print_line_info_if_debug(const LineInfo& line_info)
+    {
+#if !defined(NDEBUG)
+        System::println(System::color::error, line_info.toString());
+#endif
+    }
+
     void unreachable(const LineInfo& line_info)
     {
         System::println(System::color::error, "Error: Unreachable code was reached.");
-        System::println(System::color::error, line_info.toString());
-#ifndef NDEBUG
+        System::println(System::color::error, line_info.toString()); // Always print line_info here
+#if !defined(NDEBUG)
         std::abort();
 #else
         exit(EXIT_FAILURE);
@@ -26,11 +33,13 @@ namespace vcpkg::Checks
     void exit_with_message(const LineInfo& line_info, const char* errorMessage)
     {
         System::println(System::color::error, errorMessage);
+        print_line_info_if_debug(line_info);
         exit(EXIT_FAILURE);
     }
 
     void throw_with_message(const LineInfo& line_info, const char* errorMessage)
     {
+        print_line_info_if_debug(line_info);
         throw std::runtime_error(errorMessage);
     }
 
@@ -46,6 +55,7 @@ namespace vcpkg::Checks
     {
         if (!expression)
         {
+            print_line_info_if_debug(line_info);
             exit(EXIT_FAILURE);
         }
     }

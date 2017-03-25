@@ -1,0 +1,5 @@
+Source: sdl2-mixer
+Version: 2.0.1
+Build-Depends: sdl2
+Description: SDL_mixer is a sample multi-channel audio mixer library. It supports any number of simultaneously playing channels of 16 bit stereo audio, plus a single channel of music, mixed by the popular FLAC, MikMod MOD, Timidity MIDI, Ogg Vorbis, and SMPEG MP3 libraries.
+
